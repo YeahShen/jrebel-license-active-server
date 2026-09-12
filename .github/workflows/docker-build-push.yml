@@ -27,15 +27,17 @@ jobs:
           username: ${{ secrets.ALIYUN_ACR_USERNAME }}
           password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v4
+      - name: 构建并推送镜像
+        uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          sbom: false
           tags: |
-            registry.cn-hangzhou.aliyuncs.com/amy_station/jrebel-license-active-server:latest
+            registry.cn-hangzhou.aliyuncs.com/ashen_station/jrebel-license-active-server:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
 #      - name: Build and push
 #        uses: docker/build-push-action@v4
