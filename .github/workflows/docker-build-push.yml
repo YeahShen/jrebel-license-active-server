@@ -22,19 +22,19 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: registry.cn-hangzhou.aliyuncs.com
+          username: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/jrebel-license-active-server:latest
+            registry.cn-hangzhou.aliyuncs.com/amy_station/jrebel-license-active-server:latest
 
 #      - name: Build and push
 #        uses: docker/build-push-action@v4
